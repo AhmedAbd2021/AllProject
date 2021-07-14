@@ -1,0 +1,16 @@
+git init
+git add README.md
+git commit -m "version"
+git remote add origin proejctName
+git push -u origin master
+
+
+----------------------------------
+
+git pull remote branch 
+git push remote branch 
+git pull remote branch --allow-unrelated-histories
+
+
+----------------------------
+git push -f origin master  ---> overwrite project

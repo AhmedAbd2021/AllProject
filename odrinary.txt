@@ -1,0 +1,97 @@
+package BaseClass;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class Baseclass {
+
+	static WebDriver driver;
+
+	@BeforeTest
+	@Parameters("browser")
+	public void setup(String browser) throws Exception {
+
+		if (browser.equalsIgnoreCase("chrome")) {
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver();
+
+		} else if (browser.equalsIgnoreCase("firefox")) {
+
+			WebDriverManager.firefoxdriver().setup();
+			driver = new FirefoxDriver();
+
+		} else {
+
+			throw new Exception("browser is not correct");
+		}
+
+	}
+
+	@AfterTest
+	public void ConfigurationURl() {
+
+		String url = "http://asos:123@192.168.1.46/EmpEvaluation";
+
+		driver.navigate().to(url);
+
+		driver.manage().window().maximize();
+
+	}
+
+	public static WebDriver Getwebdriver() {
+
+		return driver;
+
+	}
+	
+	@AfterSuite
+	public void teardown() {
+		
+		driver.quit();
+	}
+
+}
+
+-------------------------------------------------------------------------------------------------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="empeval" parallel="tests">
+
+
+	<test name="chrome" thread-count="1">
+
+		<parameter name="browser" value="chrome" />
+
+		<classes>
+			<class name="BaseClass.Baseclass" />
+		</classes>
+
+	</test> <!-- chrome -->
+
+
+
+	<test name="firefox" thread-count="2">
+
+		<parameter name="browser" value="firefox" />
+
+		<classes>
+			<class name="BaseClass.Baseclass" />
+		</classes>
+
+
+	</test> <!-- firefox -->
+
+
+
+
+
+</suite> <!-- empeval -->
